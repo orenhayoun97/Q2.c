@@ -19,13 +19,13 @@ typedef struct Worker {
     }join_year;
 }Worker;
 
-Worker* CrateWorker(unsigned long id,char *name,unsigned long salery,int join_year);
+Worker* CrateWorker(unsigned long id,char *name,unsigned long salery,int check);
 void PrintWorker(Worker* Worker);
 
 int main(){
     
 }
-Worker* CrateWorker(unsigned long id,char *name,unsigned long salery,int join_year){
+Worker* CrateWorker(unsigned long id,char *name,unsigned long salery,void *p2year,int check){
     Worker* New_worker = (Worker*)malloc(sizeof(Worker));
     if(!New_worker){
         printf("Allocation failed...\n");
@@ -39,7 +39,11 @@ Worker* CrateWorker(unsigned long id,char *name,unsigned long salery,int join_ye
     strcpy(New_worker->name,name);
     New_worker->id = (unsigned long)id;
     New_worker->salery = salery;
-    New_worker->join_year. = join_year;
+    if(check){
+        New_worker->join_year.luz_year = (int) *p2year;
+    }
+    else
+        New_worker->join_year.heb_year = (char) *p2year;
     return New_worker ;
 }
 void PrintWorker(Worker* Worker,int check){ //
@@ -47,5 +51,4 @@ void PrintWorker(Worker* Worker,int check){ //
     printf("id : %llu\name : %s\nsalery : %llu\njoin year : %llu\n",Worker->id,Worker->name,Worker->salery,Worker->join_year.luz_year);
     }
     else printf("id : %llu\name : %s\nsalery : %llu\njoin year : %s\n",Worker->id,Worker->name,Worker->salery,Worker->join_year.heb_year);
-        
 }
