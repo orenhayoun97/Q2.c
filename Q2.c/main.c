@@ -19,7 +19,7 @@ typedef struct Worker {
     }join_year;
 }Worker;
 
-Worker* CrateWorker(unsigned long id,char *name,unsigned long salery,int check);
+Worker* CrateWorker(unsigned long id,char *name,unsigned long salery,void *p2year,int check);
 void PrintWorker(Worker* Worker);
 
 int main(){
