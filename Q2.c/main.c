@@ -265,7 +265,12 @@ WorkerList* deleteWorstWorker(WorkerList *head){
         curr=curr->next;
         prev=prev->next;
     }
-    before->next = lowest->next;
+    // case with the head is the lowest
+    if(!before){
+        head = head->next;
+
+    }
+    else before->next = lowest->next;
     
     // free the worst worker
     free(lowest->data->name);
