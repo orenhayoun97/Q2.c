@@ -29,7 +29,7 @@ typedef struct WorkerList{
 
 
 
-Worker* CrateWorker(Worker *w,char *n,int check);
+Worker* CrateWorker(int check);
 void PrintWorker(Worker* Worker,int check);
 void PrintWorkerList(WorkerList *head);
 WorkerList* addWorker(WorkerList *head, Worker* w);
@@ -42,48 +42,83 @@ WorkerList* reverse(WorkerList * head);
 
 int main(){
     WorkerList *head = NULL;
-    char *name1 = "oren";
-    char *name2 = "shahaf";
-    char *name3 = "yossi";
-    char *name4 = "yoni";
-    char *name5 = "poli";
+    unsigned long search = 0;
+    float update = 0;
+//    char *name1 = "oren";
+//    char *name2 = "shahaf";
+//    char *name3 = "yossi";
+//    char *name4 = "yoni";
+//    char *name5 = "poli";
     
-    Worker w1 = {209,name1,1200,2010};
-    Worker w2 = {315,name2,4200,2012};
-    Worker w3 = {255,name3,5000,2014};
-    Worker w4 = {441,name4,600,2022};
-    Worker w5 = {762,name5,1550,2003};
+//    Worker w1 = {209,name1,1200,2010};
+//    Worker w2 = {315,name2,4200,2012};
+//    Worker w3 = {255,name3,5000,2014};
+//    Worker w4 = {441,name4,600,2022};
+//    Worker w5 = {762,name5,1550,2003};
     
-    CrateWorker(&w1,w1.name,1);
-    CrateWorker(&w2,w2.name,1);
-    CrateWorker(&w3,w3.name,1);
-    CrateWorker(&w4,w4.name,1);
-    CrateWorker(&w5,w5.name,1);
+//    Worker *W1 = CrateWorker(&w1,1);
+//    Worker *W2 = CrateWorker(&w2,1);
+//    Worker *W3 = CrateWorker(&w3,1);
+//    Worker *W4 = CrateWorker(&w4,1);
+//    Worker *W5 = CrateWorker(&w5,1);
     
-    PrintWorker(&w5,1);
+    Worker *W1 = CrateWorker(1);
+    Worker *W2 = CrateWorker(1);
+    Worker *W3 = CrateWorker(1);
+    Worker *W4 = CrateWorker(1);
+    Worker *W5 = CrateWorker(1);
     
-    head = addWorker(head,&w1);
-    head = addWorker(head,&w2);
-    head = addWorker(head,&w3);
-    head = addWorker(head,&w4);
-    head = addWorker(head,&w5);
+    
+    head = addWorker(head,W1);
+    head = addWorker(head,W2);
+    head = addWorker(head,W3);
+    head = addWorker(head,W4);
+    head = addWorker(head,W5);
     
     PrintWorkerList(head);
     
+    // check if the id in the list and print the index
     
-    printf("the index in Loop function is : %d\n",indeX(head,255));
+    printf("put a id for search\n");
+    fseek(stdin,0,SEEK_END);
+    scanf("%lu",&search);
+    int ind = indeX(head,search);
+    if(ind > 0){
+        printf("the index in Loop function is : %d\n",ind);
+    }
+    ind = indexR(head,search);
+    if(ind > 0){
+        printf("the index in recursion function is : %d\n",ind);
+    }
     
-    printf("the index in recursion function is : %d\n",  indexR(head,255));
+    // function that delete the worst worker in the list
     
     head = deleteWorstWorker(head);
     printf("\n//delete worst worker//\n");
     PrintWorkerList(head);
-    update_worker(head,0.20);
+    
+    // function that rises the salary according to percent
+    // until the percent up to 0
+    while(1){
+        printf("put a percent number\n");
+        fseek(stdin,0,SEEK_END);
+        scanf("%f",&update);
+        if(update >= 0){
+            break;
+        }
+    }
+    update_worker(head,update/100);
     printf("\n//update//\n");
     PrintWorkerList(head);
+    
+    // function that reverst the list
+    
     head = reverse(head);
     printf("\n//reverse//\n");
     PrintWorkerList(head);
+    
+    //free all the list
+    
     freeWorkers(head);
     
     
@@ -95,7 +130,7 @@ int main(){
 
 // scanf crate worker function
 
-Worker* CrateWorker(Worker *w,char *n,int check){ // check 1 = luz check 0 = heb
+Worker* CrateWorker(int check){ // check 1 = luz check 0 = heb
     
 //    to check this function and the all code we used in const workers list
 
@@ -105,35 +140,38 @@ Worker* CrateWorker(Worker *w,char *n,int check){ // check 1 = luz check 0 = heb
         printf("Allocation failed...\n");
         exit(0);
     }
-//    printf("write a worker id\n");
-//    scanf("%lu",&New_worker->id);
+    printf("write a worker id\n");
+    fseek(stdin,0,SEEK_END);
+    scanf("%lu",&New_worker->id);
     
-    New_worker->id = w->id;
+//    New_worker->id = w->id;
     
-//    printf("write a worker name\n");
-//    scanf("%s",temp_name);
-    strcpy(temp_name,w->name);
+    printf("write a worker name\n");
+    fseek(stdin,0,SEEK_END);
+    scanf("%s",temp_name);
+//    strcpy(temp_name, w->name);
     
     New_worker->name =(char*)calloc(sizeof(char),strlen(temp_name) + 1);
     if(!New_worker->name){
         printf("Allocation failed...\n");
         exit(1);
     }
-    strcpy(New_worker->name,w->name);
+    strcpy(New_worker->name,temp_name);
     
-//    printf("what is salery\n");
-//    scanf("%lu",&New_worker->salery);
+    printf("what is salery\n");
+    fseek(stdin,0,SEEK_END);
+    scanf("%lu",&New_worker->salery);
     
-    New_worker->salery = w->salery;
+//    New_worker->salery = w->salery;
     
-//    printf("join year\n");
-    if(check){
-//        scanf("%lu",&New_worker->join_year.luz_year);
-        New_worker->join_year.luz_year = w->join_year.luz_year;
+    printf("join year\n");
+    if(check){ // check=1 -> luz year , check=0 -> heb year
+        scanf("%lu",&New_worker->join_year.luz_year);
+//        New_worker->join_year.luz_year = w->join_year.luz_year;
     }
     else
-//        scanf("%s",New_worker->join_year.heb_year);
-        New_worker->join_year.luz_year = w->join_year.heb_year;
+        scanf("%s",New_worker->join_year.heb_year);
+//        New_worker->join_year.luz_year = w->join_year.heb_year;
     return New_worker;
 }
 
@@ -143,6 +181,9 @@ void PrintWorker(Worker* Worker,int check){ //
     }
     else printf("id : %lu\nname : %s\nsalery : %lu\njoin year : %s\n",Worker->id,Worker->name,Worker->salery,Worker->join_year.heb_year);
 }
+
+// not part from the Question
+
 void PrintWorkerList(WorkerList *head){
     WorkerList *temp = head;
     while(temp != NULL){
@@ -167,7 +208,6 @@ WorkerList* addWorker(WorkerList *head, Worker* w){
     
     // case with empty list
     if(head == NULL){
-        printf("The list is empty...\n");
         head = New;
         return head;
     }
@@ -210,25 +250,32 @@ int indeX(WorkerList *head, long unsigned id){
 
 // Recursion
 int indexR(WorkerList *head, long unsigned id){
+    int ind = 0;
     if(head == NULL) return -1;
     if(head->data->id == id) return 1;
-    return 1+indexR(head->next,id);
+    ind = indexR(head->next,id);
+    if(ind == -1) return -1;
+    else return ++ind;
 }
 
+
 WorkerList* deleteWorstWorker(WorkerList *head){
+    WorkerList *lowest = head;
+    WorkerList *before = NULL;
+    WorkerList *curr = head->next;
+    WorkerList *prev = head;
+    
     // case with empty list
     if(head == NULL){
         printf("The List is empty...");
         return head;
     }
-    WorkerList *lowest = head;
-    WorkerList *before = NULL;
-    WorkerList *curr = head->next;
-    WorkerList *prev = head;
+    // case with one worker in the list
     if(curr == NULL){
-        printf("there is one worker in list...");
+        printf("there is one worker in the list...");
         return head;
     }
+    // case with more than one worker in the list
     while(curr != NULL){
         if(lowest->data->salery > curr->data->salery){
             lowest = curr;
@@ -238,7 +285,10 @@ WorkerList* deleteWorstWorker(WorkerList *head){
         prev=prev->next;
     }
     before->next = lowest->next;
+    
+    // free the worst worker
     free(lowest->data->name);
+    free(lowest->data);
     free(lowest);
     return head;
 }
@@ -251,32 +301,12 @@ void update_worker(WorkerList* head, float percent){
         printf("The list is empty...\n");
         return;
     }
-    //
     while (temp != NULL)
     {
         temp->data->salery = temp->data->salery * percent + temp->data->salery;
         temp = temp->next;
     }
 }
-
-    void freeWorkers(WorkerList * head)
-    {
-        WorkerList* tempSave = head;
-        WorkerList* tempFree = head;
-        if (head == NULL)
-        {
-            printf("The list is empty...\n");
-            return;
-        }
-
-        while (tempSave != NULL)
-        {
-            tempFree = tempSave;
-            tempSave = tempSave->next;
-            free(tempFree->data->name);
-            free(tempFree->data);
-        }
-    }
 WorkerList* reverse(WorkerList * head)
     {
         WorkerList* tmp1 = NULL;
@@ -296,4 +326,23 @@ WorkerList* reverse(WorkerList * head)
             tmp2 = tmp1;
         }
         return tmp1;
+    }
+
+    void freeWorkers(WorkerList* head)
+    {
+        WorkerList* tempSave = head;
+        WorkerList* tempFree = head;
+        if (head == NULL)
+        {
+            printf("The list is empty...\n");
+            return;
+        }
+
+        while (tempSave != NULL)
+        {
+            tempFree = tempSave;
+            tempSave = tempSave->next;
+            free(tempFree->data->name);
+            free(tempFree->data);
+        }
     }
