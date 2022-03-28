@@ -41,25 +41,24 @@ void freeWorkers(WorkerList * head);
 WorkerList* reverse(WorkerList * head);
 
 int main(){
-    int i = 0;
     WorkerList *head = NULL;
-    char name1[20] = "oren";
-    char name2[20] = "shahaf";
-    char name3[20] = "yossi";
-    char name4[20] = "yoni";
-    char name5[20] = "poli";
+    char *name1 = "oren";
+    char *name2 = "shahaf";
+    char *name3 = "yossi";
+    char *name4 = "yoni";
+    char *name5 = "poli";
     
-    Worker w1 = {209,NULL,1200,2010};
-    Worker w2 = {315,NULL,4200,2012};
-    Worker w3 = {255,NULL,5000,2014};
-    Worker w4 = {441,NULL,600,2022};
-    Worker w5 = {762,NULL,1550,2003};
+    Worker w1 = {209,name1,1200,2010};
+    Worker w2 = {315,name2,4200,2012};
+    Worker w3 = {255,name3,5000,2014};
+    Worker w4 = {441,name4,600,2022};
+    Worker w5 = {762,name5,1550,2003};
     
-    CrateWorker(&w1,name1,1);
-    CrateWorker(&w2,name2,1);
-    CrateWorker(&w3,name3,1);
-    CrateWorker(&w4,name4,1);
-    CrateWorker(&w5,name5,1);
+    CrateWorker(&w1,w1.name,1);
+    CrateWorker(&w2,w2.name,1);
+    CrateWorker(&w3,w3.name,1);
+    CrateWorker(&w4,w4.name,1);
+    CrateWorker(&w5,w5.name,1);
     
     PrintWorker(&w5,1);
     
@@ -101,7 +100,7 @@ Worker* CrateWorker(Worker *w,char *n,int check){ // check 1 = luz check 0 = heb
 //    to check this function and the all code we used in const workers list
 
     char temp_name[40];
-    Worker* New_worker = (Worker*)malloc(sizeof(Worker));
+    Worker* New_worker = (Worker*)calloc(1,sizeof(Worker));
     if(!New_worker){
         printf("Allocation failed...\n");
         exit(0);
@@ -113,15 +112,14 @@ Worker* CrateWorker(Worker *w,char *n,int check){ // check 1 = luz check 0 = heb
     
 //    printf("write a worker name\n");
 //    scanf("%s",temp_name);
-    strcpy(temp_name,n);
+    strcpy(temp_name,w->name);
     
-    char *name1 =(char*)malloc(sizeof(char) * strlen(temp_name) + 1);
-    if(!name1){
+    New_worker->name =(char*)calloc(sizeof(char),strlen(temp_name) + 1);
+    if(!New_worker->name){
         printf("Allocation failed...\n");
         exit(1);
     }
-    strcpy(name1,temp_name);
-    New_worker->name = name1;
+    strcpy(New_worker->name,w->name);
     
 //    printf("what is salery\n");
 //    scanf("%lu",&New_worker->salery);
@@ -241,7 +239,7 @@ WorkerList* deleteWorstWorker(WorkerList *head){
     }
     before->next = lowest->next;
     free(lowest->data->name);
-    free(lowest->next);
+    free(lowest);
     return head;
 }
 void update_worker(WorkerList* head, float percent){
@@ -275,7 +273,7 @@ void update_worker(WorkerList* head, float percent){
         {
             tempFree = tempSave;
             tempSave = tempSave->next;
-         //   free(tempFree->data->name);
+            free(tempFree->data->name);
             free(tempFree->data);
         }
     }
