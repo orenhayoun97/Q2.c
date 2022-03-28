@@ -44,30 +44,16 @@ int main(){
     WorkerList *head = NULL;
     unsigned long search = 0;
     float update = 0;
-//    char *name1 = "oren";
-//    char *name2 = "shahaf";
-//    char *name3 = "yossi";
-//    char *name4 = "yoni";
-//    char *name5 = "poli";
     
-//    Worker w1 = {209,name1,1200,2010};
-//    Worker w2 = {315,name2,4200,2012};
-//    Worker w3 = {255,name3,5000,2014};
-//    Worker w4 = {441,name4,600,2022};
-//    Worker w5 = {762,name5,1550,2003};
-    
-//    Worker *W1 = CrateWorker(&w1,1);
-//    Worker *W2 = CrateWorker(&w2,1);
-//    Worker *W3 = CrateWorker(&w3,1);
-//    Worker *W4 = CrateWorker(&w4,1);
-//    Worker *W5 = CrateWorker(&w5,1);
+    //for luz year 1
+    //for heb year 0
+    // we start a 5 workers, we can change it
     
     Worker *W1 = CrateWorker(1);
     Worker *W2 = CrateWorker(1);
     Worker *W3 = CrateWorker(1);
     Worker *W4 = CrateWorker(1);
     Worker *W5 = CrateWorker(1);
-    
     
     head = addWorker(head,W1);
     head = addWorker(head,W2);
@@ -144,12 +130,10 @@ Worker* CrateWorker(int check){ // check 1 = luz check 0 = heb
     fseek(stdin,0,SEEK_END);
     scanf("%lu",&New_worker->id);
     
-//    New_worker->id = w->id;
     
     printf("write a worker name\n");
     fseek(stdin,0,SEEK_END);
     scanf("%s",temp_name);
-//    strcpy(temp_name, w->name);
     
     New_worker->name =(char*)calloc(sizeof(char),strlen(temp_name) + 1);
     if(!New_worker->name){
@@ -162,16 +146,13 @@ Worker* CrateWorker(int check){ // check 1 = luz check 0 = heb
     fseek(stdin,0,SEEK_END);
     scanf("%lu",&New_worker->salery);
     
-//    New_worker->salery = w->salery;
     
     printf("join year\n");
     if(check){ // check=1 -> luz year , check=0 -> heb year
         scanf("%lu",&New_worker->join_year.luz_year);
-//        New_worker->join_year.luz_year = w->join_year.luz_year;
     }
     else
         scanf("%s",New_worker->join_year.heb_year);
-//        New_worker->join_year.luz_year = w->join_year.heb_year;
     return New_worker;
 }
 
@@ -183,6 +164,7 @@ void PrintWorker(Worker* Worker,int check){ //
 }
 
 // not part from the Question
+// print all the list
 
 void PrintWorkerList(WorkerList *head){
     WorkerList *temp = head;
@@ -191,7 +173,6 @@ void PrintWorkerList(WorkerList *head){
         printf("\n");
         temp=temp->next;
     }
-    
 }
 
 WorkerList* addWorker(WorkerList *head, Worker* w){
@@ -231,7 +212,7 @@ WorkerList* addWorker(WorkerList *head, Worker* w){
 int indeX(WorkerList *head, long unsigned id){
     // case empty list
     if(!head){
-        printf("The list is empty\n");
+        printf("The id not found because the list is empty...\n");
         return -1;
     }
     WorkerList* temp = head;
@@ -309,35 +290,38 @@ void update_worker(WorkerList* head, float percent){
 }
 WorkerList* reverse(WorkerList * head)
     {
-        WorkerList* tmp1 = NULL;
-        WorkerList* tmp2 = NULL;
+        // crate 2 pointeres
+        WorkerList* new_head = NULL;
+        WorkerList* temp = NULL;
         
         if (head == NULL)
         {
             printf("The list is empty...\n");
             return head;
         }
-
+        
         while (head != NULL)
         {
-            tmp1 = head;
+            new_head = head;
             head = head->next;
-            tmp1->next = tmp2;
-            tmp2 = tmp1;
+            new_head->next = temp;
+            temp = new_head;
         }
-        return tmp1;
+        return new_head;
     }
 
     void freeWorkers(WorkerList* head)
     {
+        // crate 2 pointers
         WorkerList* tempSave = head;
         WorkerList* tempFree = head;
+        // deal with empty list
         if (head == NULL)
         {
             printf("The list is empty...\n");
             return;
         }
-
+        // free all the list
         while (tempSave != NULL)
         {
             tempFree = tempSave;
